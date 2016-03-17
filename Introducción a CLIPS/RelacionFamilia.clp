@@ -10,6 +10,7 @@
   (Sexo "Jaime" Hombre)
   (Sexo "Carlos" Hombre)
   (Sexo "Lolo" Hombre)
+  (Sexo "José" Hombre)
 
   (Sexo "Eva" Mujer)
   (Sexo "Ana" Mujer)
@@ -21,6 +22,7 @@
   (Sexo "Aina" Mujer)
   (Sexo "Gloria" Mujer)
   (Sexo "Isa" Mujer)
+  (Sexo "Antonia" Mujer)
 
   ; Definimos las relaciones principales entre estos miembros ("pareja de" y "padre de")
   ; Parejas
@@ -30,6 +32,7 @@
   (Relacion Pareja "Pepe" "Julia")
   (Relacion Pareja "Manolo" "Inma")
   (Relacion Pareja "Abuelo Antonio" "Rosarito")
+  (Relacion Pareja "José" "Antonia")
 
   ; Padre de
   (Relacion Padre "Antonio" "Antoñito")
@@ -54,6 +57,16 @@
 
   (Relacion Padre "Abuelo Antonio" "Antonio")
   (Relacion Padre "Rosarito" "Antonio")
+  (Relacion Padre "Abuelo Antonio" "Manolo")
+  (Relacion Padre "Rosarito" "Manolo")
+  (Relacion Padre "Abuelo Antonio" "Pepe")
+  (Relacion Padre "Rosarito" "Pepe")
+
+  (Relacion Padre "Antonia" "MariCarmen")
+  (Relacion Padre "Antonia" "Isabel")
+  (Relacion Padre "José" "MariCarmen")
+  (Relacion Padre "José" "Isabel")
+
 
   ; Definimos los duales de las relaciones (padre-hijo, nieto-abuelo, etc)
   (Dual Padre Hijo)
@@ -63,6 +76,7 @@
   (Dual Primo Primo)
   (Dual Suegro Yerno)
   (Dual Abuelo Nieto)
+  (Dual Cuñado Cuñado)
 
   ; Definimos los parentescos compuestos (abuelo, tío, etc)
   (Compuesto Padre Padre Abuelo)
@@ -87,7 +101,13 @@
   (GeneroRelacion Suegro Suegra)
   (GeneroRelacion Yerno Nuera)
   (GeneroRelacion Nieto Nieta)
-  (GeneroRelacion Consuegro Consuegra)
+)
+
+; Definimos el dual de la relación dual
+(defrule MetaDualizar
+    (Dual ?R1 ?R2)    ; Existe dual entre R1 y R2
+    =>
+    (assert (Dual ?R2 ?R1))
 )
 
 ; Definimos las relaciones duales
@@ -98,18 +118,13 @@
     (assert (Relacion ?R2 ?y ?x))
 )
 
-; Definimos el dual de la relación dual
-(defrule MetaDualizar
-    (Dual ?R1 ?R2)    ; Existe dual entre R1 y R2
-    =>
-    (assert (Dual ?R2 ?R1))
-)
+
 
 ; Definimos la composición de relaciones
 (defrule Componer
     (Relacion ?R1 ?x ?y)      ; Si existe una relación de x a y
     (Relacion ?R2 ?y ?z)      ; Y una de y a z
-    (Composicion ?R1 ?R2 ?R3) ; Las componemos
+    (Compuesto ?R1 ?R2 ?R3)   ; Las componemos
     (test (neq ?x ?z))        ; Nos cercioramos que no hablemos de la misma persona
     =>
     (assert (Relacion ?R3 ?x ?z))
@@ -119,7 +134,7 @@
 (defrule PreguntaMasculino
     (Pregunta ?nombre1 ?nombre2)            ; Preguntamos sobre estos nombres
     (Relacion ?relacion ?nombre1 ?nombre2)  ; Vemos la relación entre ambas
-    (Genero ?nombre1 Hombre)                ; Sólo hombres
+    (Sexo ?nombre1 Hombre)                  ; Sólo hombres
     =>
     (printout t crlf ?nombre1 " es " ?relacion " de " ?nombre2 crlf)
 )
@@ -128,8 +143,8 @@
 (defrule PreguntaFemenino
     (Pregunta ?nombre1 ?nombre2)            ; Preguntamos sobre estos nombres
     (Relacion ?relacion ?nombre1 ?nombre2)  ; Vemos la relación entre ambas
-    (Genero ?nombre1 Mujer)                 ; Sólo mujeres
-    (RelacionGenero ?relacion ?relacionFem) ; Tomamos la relación en femenino
+    (Sexo ?nombre1 Mujer)                   ; Sólo mujeres
+    (GeneroRelacion ?relacion ?relacionFem) ; Tomamos la relación en femenino
     =>
     (printout t crlf ?nombre1 " es " ?relacionFem " de " ?nombre2 crlf)
 )
