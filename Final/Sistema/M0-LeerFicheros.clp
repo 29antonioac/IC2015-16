@@ -10,6 +10,7 @@
 ;;;; Análisis
 (defrule abrirFicheroAnalisis
   (declare (salience 2))
+  (Modulo 0)
   (Fichero Analisis ?archivo)
   =>
   (open ?archivo archivoAnalisis)
@@ -18,6 +19,7 @@
 
 (defrule leerFicheroAnalisis
   (declare (salience 1))
+  (Modulo 0)
   ?f <- (SeguirLeyendo DatosAnalisis)
   =>
   (bind ?Leido (read archivoAnalisis))
@@ -31,7 +33,7 @@
       (PER (read archivoAnalisis))
       (RPD (read archivoAnalisis))
       (Tamano (read archivoAnalisis))
-      (PorcIbex (read archivoAnalisis))
+      (PorcentajeIbex (read archivoAnalisis))
       (EtiqPER (read archivoAnalisis))
       (EtiqRPD (read archivoAnalisis))
       (Sector (read archivoAnalisis))
@@ -39,7 +41,7 @@
       (Perd3Consec (read archivoAnalisis))
       (Perd5Consec (read archivoAnalisis))
       (VarRespSector5Dias (read archivoAnalisis))
-      (PerdRespSectorGrande (read archivoAnalisis))
+      (PerdidaResSectorGrande (read archivoAnalisis))
       (VarMes (read archivoAnalisis))
       (VarTri (read archivoAnalisis))
       (VarSem (read archivoAnalisis))
@@ -51,6 +53,7 @@
 
 (defrule cerrarFicheroAnalisis
   (declare (salience -1))
+  (Modulo 0)
   =>
   (close archivoAnalisis)
 )
@@ -59,6 +62,7 @@
 
 (defrule abrirFicheroAnalisisSectores
   (declare (salience 2))
+  (Modulo 0)
   (Fichero AnalisisSectores ?archivo)
   =>
   (open ?archivo archivoAnalisisSectores)
@@ -67,6 +71,7 @@
 
 (defrule leerFicheroAnalisisSectores
   (declare (salience 1))
+  (Modulo 0)
   ?f <- (SeguirLeyendo DatosAnalisisSectores)
   =>
   (bind ?Leido (read archivoAnalisisSectores))
@@ -93,6 +98,7 @@
 
 (defrule cerrarFicheroAnalisisSectores
   (declare (salience -1))
+  (Modulo 0)
   =>
   (close archivoAnalisisSectores)
 )
@@ -101,6 +107,7 @@
 
 (defrule abrirFicheroCartera
   (declare (salience 2))
+  (Modulo 0)
   (Fichero Cartera ?archivo)
   =>
   (open ?archivo archivoCartera)
@@ -109,6 +116,7 @@
 
 (defrule leerFicheroCartera
   (declare (salience 1))
+  (Modulo 0)
   ?f <- (SeguirLeyendo DatosCartera)
   =>
   (bind ?Leido (read archivoCartera))
@@ -125,6 +133,7 @@
 
 (defrule cerrarFicheroCartera
   (declare (salience -1))
+  (Modulo 0)
   =>
   (close archivoCartera)
 )
@@ -133,6 +142,7 @@
 
 (defrule abrirFicheroNoticias
   (declare (salience 2))
+  (Modulo 0)
   (Fichero Noticias ?archivo)
   =>
   (open ?archivo archivoNoticias)
@@ -141,6 +151,7 @@
 
 (defrule leerFicheroNoticias
   (declare (salience 1))
+  (Modulo 0)
   ?f <- (SeguirLeyendo DatosNoticias)
   =>
   (bind ?Leido (read archivoNoticias))
@@ -157,6 +168,7 @@
 
 (defrule cerrarFicheroNoticias
   (declare (salience -1))
+  (Modulo 0)
   =>
   (close archivoNoticias)
 )

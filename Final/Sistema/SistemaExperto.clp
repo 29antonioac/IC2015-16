@@ -5,6 +5,7 @@
   (load "M0-Deducciones.clp")
   ; Aquí los que queden
   (reset)
+  (assert (Modulo 0))
   (run)
 )
 
