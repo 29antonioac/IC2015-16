@@ -20,6 +20,8 @@
   (field VarTri)
   (field VarSem)
   (field VarAnual)
+  (field Estabilidad
+    (default NULL))
 )
 
 ; Template para almacenar un sector del IBEX35
