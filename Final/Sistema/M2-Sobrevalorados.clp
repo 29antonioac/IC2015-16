@@ -2,41 +2,35 @@
 
 (defrule ValoresSobrevaloradosGeneral
   (Modulo 2)
-  ?f <- (Cartera (Nombre ?nombre))
-  (Valor (Nombre ?nombre) (EtiqPER Alto) (EtiqRPD Bajo))
+  ?f <- (Valor (Nombre ?nombre) (EtiqPER Alto) (EtiqRPD Bajo) (Sobrevalorado ~true))
   =>
   (modify ?f (Sobrevalorado true))
 )
 
 (defrule ValoresSobrevaloradosPequenia1
   (Modulo 2)
-  ?f <- (Cartera (Nombre ?nombre))
-  (Valor (Nombre ?nombre) (Tamanio PEQUENIA) (EtiqPER Alto))
+  ?f <- (Valor (Nombre ?nombre) (Tamano PEQUENIA) (EtiqPER Alto) (Sobrevalorado ~true))
   =>
   (modify ?f (Sobrevalorado true))
 )
 
 (defrule ValoresSobrevaloradosPequenia2
   (Modulo 2)
-  ?f <- (Cartera (Nombre ?nombre))
-  (Valor (Nombre ?nombre) (Tamanio PEQUENIA) (EtiqPER Mediano) (EtiqRPD Bajo))
+  ?f <- (Valor (Nombre ?nombre) (Tamano PEQUENIA) (EtiqPER Mediano) (EtiqRPD Bajo) (Sobrevalorado ~true))
   =>
   (modify ?f (Sobrevalorado true))
 )
 
-(defrule ValoresSobrevaloradosGrande1
-  (Modulo 2)
-  ?f <- (Cartera (Nombre ?nombre))
-  (Valor (Nombre ?nombre) (Tamanio GRANDE) (EtiqRPD Bajo) (or (EtiqPER Alto)
-                                                              (EtiqPER Mediano)))
-  =>
-  (modify ?f (Sobrevalorado true))
-)
+; (defrule ValoresSobrevaloradosGrande1
+;   (Modulo 2)
+;   ?f <- (Valor (Nombre ?nombre) (Tamano GRANDE) (EtiqRPD Bajo) (or  (EtiqPER Alto) (EtiqPER Mediano)) (Sobrevalorado ~true))
+;   =>
+;   (modify ?f (Sobrevalorado true))
+; )
 
 (defrule ValoresSobrevaloradosGrande2
   (Modulo 2)
-  ?f <- (Cartera (Nombre ?nombre))
-  (Valor (Nombre ?nombre) (Tamanio GRANDE) (EtiqRPD Mediano) (EtiqPER Alto))
+  ?f <- (Valor (Nombre ?nombre) (Tamano GRANDE) (EtiqRPD Mediano) (EtiqPER Alto) (Sobrevalorado ~true))
   =>
   (modify ?f (Sobrevalorado true))
 )
