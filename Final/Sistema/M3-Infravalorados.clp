@@ -1,10 +1,10 @@
-; Detección de valores infravalorados 
+; Detección de valores infravalorados
 
 (defrule ValoresInfravaloradosGeneral
   (Modulo 3)
   ?f <- (Valor (Nombre ?nombre) (EtiqPER Bajo) (EtiqRPD Alto) (Infravalorado ~true))
   =>
-  (modify ?f (Infravalorado true))
+  (modify ?f (Infravalorado true "Tiene PER bajo y RPD alto"))
 )
 
 (defrule ValoresInfravaloradosCaida
@@ -15,7 +15,8 @@
   (test(< ?mes 10))
   (test(> ?mes 0))
   =>
-  (modify ?f (Infravalorado true))
+  (modify ?f (Infravalorado true "Tiene PER bajo y presenta pérdidas de más del
+                30% en los últimos meses, pero una subida pequeña en el último mes"))
 )
 
 (defrule ValoresInfravaloradosGrande
@@ -25,7 +26,8 @@
   (test (> ?var 0))
   (test (> ?varSector 0))
   =>
-  (modify ?f (Infravalorado true))
+  (modify ?f (Infravalorado true "Es grande, tiene PER mediano y RPD alto, y está
+                ganando con respecto al sector"))
 )
 
 

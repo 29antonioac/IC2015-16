@@ -22,9 +22,9 @@
   (slot VarAnual)
   (slot Estabilidad
     (default NULL))
-  (slot Sobrevalorado
+  (multislot Sobrevalorado
     (default NULL))
-  (slot Infravalorado
+  (multislot Infravalorado
     (default NULL))
   (slot RPA
     (default NULL))
@@ -59,7 +59,7 @@
   (slot Nombre)
   (slot Acciones)
   (slot Valor)
-  (slot Peligroso
+  (multislot Peligroso
     (default true))
 )
 

@@ -5,10 +5,7 @@
 ; Vender valores de empresas peligrosas
 (defrule VenderValoresPeligrosos
   (Modulo 4)
-  (Cartera (Nombre ?nombre) (Peligrosidad true))
-  ; Hasta que meta la explicación de la Peligrosidad
-  (bind ?explicacion "Porque sí")
-  ;;;;;;;
+  (Cartera (Nombre ?nombre) (Peligrosidad true ?explicacion))
   (Valor (Nombre ?nombre) (Sector ?sector) (VarMes ?varMes) (RPD ?RPD))
   (Sector (Nombre ?sector) (VarMes ?varSector))
   (test (< ?varMes 0))
@@ -35,10 +32,7 @@
 ; Invertir en empresas infravaloradas
 (defrule InvertirValoresInfravalorados
   (Modulo 4)
-  (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (Infravalorada true))
-  ; Hasta que meta la explicación de la Infravalorada
-  (bind ?explicacion "Porque sí")
-  ;;;;;;;
+  (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (Infravalorada true ?explicacion))
 
   (Cartera (Nombre DISPONIBLE) (Valor ?valor))
   (Sector (Nombre ?sector) (PER ?PERMedio))
@@ -64,11 +58,8 @@
 ; Vender valores de empresas sobrevaloradas
 (defrule VenderValoresSobrevalorados
   (Cartera (Nombre ?nombre))
-  (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (RPA ?RPA) (Sobrevalorado true))
+  (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (RPA ?RPA) (Sobrevalorado true ?explicacion))
   (Sector (Nombre ?nombre) (PER ?PERMedio))
-  ; Hasta que meta la explicación de Sobrevalorado
-  (bind ?explicacion "Porque sí")
-  ;;;;;;;
   ; Hasta que vea el precio del dinero
   (bind ?precioDinero 0)
   ;;;;;;;
@@ -94,3 +85,10 @@
 )
 
 ; Cambiar inversión a valores más rentables
+(defrule CambiarInversion
+  (Valor (Nombre ?empresa1) (RPD ?RPD1) (Sobrevalorada ~true))
+
+
+
+
+)

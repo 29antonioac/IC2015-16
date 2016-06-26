@@ -5,7 +5,7 @@
   ?f <- (Cartera (Nombre ?nombre))
   (Valor (Nombre ?nombre) (Estabilidad Inestable) (Perd3Consec true))
   =>
-  (modify ?f (Peligroso true))
+  (modify ?f (Peligroso true "Lleva 3 días bajando y es inestable"))
 )
 
 (defrule ValoresPeligrosos
@@ -13,7 +13,7 @@
   ?f <- (Cartera (Nombre ?nombre))
   (Valor (Nombre ?nombre) (Perd5Consec true) (PerdidaResSectorGrande true))
   =>
-  (modify ?f (Peligroso true))
+  (modify ?f (Peligroso true "Lleva 5 días bajando y tiene gran pérdida con respecto al sector"))
 )
 
 (defrule CerrarModulo1
