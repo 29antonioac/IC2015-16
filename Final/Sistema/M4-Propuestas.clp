@@ -14,7 +14,7 @@
   (test (< ?varMes 0))
   (test (< (- ?varMes ?varSector) -3))
   =>
-  (bind ?RE (- 20 ?RPD))
+  (bind ?RE (- 20 (* 100 ?RPD)))
   (assert Propuesta
     (Operacion Vender)
     (Nombre ?nombre)
@@ -44,7 +44,7 @@
   (Sector (Nombre ?sector) (PER ?PERMedio))
   (test (> ?valor 0))
   =>
-  (bind ?RE (+ (/ (* 100 (- ?PERMedio ?PER)) (* 5 ?PER)) ?RPD))
+  (bind ?RE (+ (/ (* 100 (- ?PERMedio ?PER)) (* 5 ?PER)) (* 100 ?RPD)))
   (assert Propuesta
     (Operacion Comprar)
     (Nombre ?nombre)
@@ -64,17 +64,23 @@
 ; Vender valores de empresas sobrevaloradas
 (defrule VenderValoresSobrevalorados
   (Cartera (Nombre ?nombre))
-  (Valor (Nombre ?nombre) (Sobrevalorado true))
+  (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (RPA ?RPA) (Sobrevalorado true))
+  (Sector (Nombre ?nombre) (PER ?PERMedio))
   ; Hasta que meta la explicación de Sobrevalorado
   (bind ?explicacion "Porque sí")
   ;;;;;;;
+  ; Hasta que vea el precio del dinero
+  (bind ?precioDinero 0)
+  ;;;;;;;
 
+
+  (test (< ?RPA (+ 5 ?precioDinero)))
   =>
-  (bind ?RE (- () ?RPD))
+  (bind ?RE (- (/ (- ?PER ?PERMedio) (* 5 ?PER)) (* 100 ?RPD)))
   (assert Propuesta
     (Operacion Vender)
     (Nombre ?nombre)
-    (RE ?RE)  
+    (RE ?RE)
     (Explicacion (str-cat "Esta empresa está sobrevalorada, es mejor amortizar "
                           "lo invertido, ya que seguramente el PER tan alto deberá "
                           "bajar al PER medio del sector en unos 5 años, con lo que "
@@ -84,7 +90,7 @@
                           ?RPD
                           " de beneficios por dividendos saldría rentable."
                   ))
-
   )
-
 )
+
+; Cambiar inversión a valores más rentables

@@ -26,6 +26,8 @@
     (default NULL))
   (field Infravalorado
     (default NULL))
+  (field RPA
+    (default NULL))
 )
 
 ; Template para almacenar un sector del IBEX35

@@ -172,3 +172,12 @@
   =>
   (close archivoNoticias)
 )
+
+; Cálculo del RPA
+(defrule RPA
+  (Modulo 0)
+  ?valor <- (Valor (Nombre ?nombre) (RPD ?RPD) (VarAnual ?varAnual) (RPA NULL))
+  =>
+  (bind ?RPA (+ (* 100 ?RPD) ?varAnual))
+  (modify ?valor (RPA ?RPA))
+)
