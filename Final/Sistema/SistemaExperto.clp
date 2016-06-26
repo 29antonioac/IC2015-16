@@ -5,6 +5,7 @@
   (load "M0-Deducciones.clp")
   (load "M1-Peligrosos.clp")
   (load "M2-Sobrevalorados.clp")
+  (load "M3-Infravalorados.clp")
   ; Aquí los que queden
   (reset)
   (assert (Modulo 0))

@@ -1,4 +1,4 @@
-; Detección de valores peligrosos del usuario
+; Detección de valores sobrevalorados
 
 (defrule ValoresSobrevaloradosGeneral
   (Modulo 2)
