@@ -22,6 +22,10 @@
   (field VarAnual)
   (field Estabilidad
     (default NULL))
+  (field Sobrevalorado
+    (default NULL))
+  (field Infravalorado
+    (default NULL))
 )
 
 ; Template para almacenar un sector del IBEX35

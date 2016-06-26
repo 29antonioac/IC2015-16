@@ -1,6 +1,6 @@
 ; Detección de valores peligrosos del usuario
 
-(defrule ValoresPeligrosos
+(defrule ValoresPeligrososInestables
   (Modulo 1)
   ?f <- (Cartera (Nombre ?nombre))
   (Valor (Nombre ?nombre) (Estabilidad Inestable) (Perd3Consec true))
