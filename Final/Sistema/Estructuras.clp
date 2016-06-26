@@ -69,4 +69,6 @@
   (slot Nombre)
   (slot RE)
   (slot Explicacion)
+  (slot OtraEmpresa
+    (default NULL))
 )

@@ -86,7 +86,29 @@
 
 ; Cambiar inversión a valores más rentables
 (defrule CambiarInversion
-  (Valor (Nombre ?empresa1) (RPD ?RPD1) (Sobrevalorada ~true))
+  (Valor (Nombre ?empresa1) (RPD ?RPD1) (RPA ?RPA1) (Sobrevalorada ~true))
+  (Cartera (Nombre ?empresa2))
+  (Valor (Nombre ?empresa2) (RPD ?RPD2) (RPA ?RPA2) (Infravalorada ~true))
+  (bind ?valorEmpresa2 (+ ?RPA2 ?RPD2 1))
+  (test (> ?RPD1 ?valorEmpresa2))
+  =>
+  (bind ?RE (- ?RPD1 ?valorEmpresa2))
+  (assert Propuesta
+    (Operacion Cambiar)
+    (Nombre ?empresa2)
+    (RE ?RE)
+    (Explicacion (str-cat ?empresa1
+                          " debe tener una revalorización acorde con la evolución "
+                          "de la bolsa. Por dividendos se espera un "
+                          ?RPD1
+                          ", que es más que lo que te está dando "
+                          ?empresa2
+                          ", por eso te propongo cambiar los valores por los de esta otra "
+                          ?valorEmpresa2
+                          ". Aunque se pague el 1% del coste del cambio te saldría rentable."
+                  ))
+    (OtraEmpresa ?empresa1)
+  )
 
 
 
