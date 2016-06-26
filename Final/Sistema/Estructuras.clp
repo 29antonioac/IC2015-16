@@ -60,3 +60,11 @@
   (field Peligroso
     (default true))
 )
+
+; Template para almacenar propuestas
+(deftemplate Propuesta
+  (field Operacion)
+  (field Nombre)
+  (field RE)
+  (field Explicacion)
+)
