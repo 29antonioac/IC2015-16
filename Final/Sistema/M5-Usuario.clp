@@ -59,11 +59,21 @@
 (defrule MostrarPropuestas
   (Modulo 5)
   ?f <- (Respuesta 1)
-  (MejorPropuesta ?Nombre ?RE)
-  (Propuesta (Operacion ?Operacion) (Nombre ?Nombre) (RE ?RE) (Explicacion ?Explicacion) )
+  ?mejor <- (Propuesta (Operacion ?Operacion) (Nombre ?Nombre) (RE ?RE) (Explicacion ?Explicacion) )
+  (not  (and (Propuesta (Nombre ?) (RE ?S2)) (test(> ?S2 ?RE))))
   =>
-  (retract ?f)
   (printout t crlf ?Nombre crlf ?Operacion crlf ?Explicacion crlf)
+  (printout t "Pulsa S si aceptas o cualquier otra tecla para rechazar: ")
+  (bind ?Aceptar (read))
+  (if (or (eq ?Aceptar S) (eq ?Aceptar s)) then
+    (retract ?f)
+    (retract ?mejor)
+    ; Actualizar cartera
+  else
+    (retract ?mejor)
+  )
+
+
 )
 
 (defrule Salir
