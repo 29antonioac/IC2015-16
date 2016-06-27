@@ -7,6 +7,7 @@
   (load "M2-Sobrevalorados.clp")
   (load "M3-Infravalorados.clp")
   (load "M4-Propuestas.clp")
+  (load "M5-Usuario.clp")
   ; Aquí los que queden
   (reset)
   (assert (Modulo 0))
