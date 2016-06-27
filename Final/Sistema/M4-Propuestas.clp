@@ -113,3 +113,11 @@
     (OtraEmpresa ?empresa1))
   )
 )
+
+(defrule CerrarModulo4
+  (declare (salience -10000))
+  ?f <- (Modulo 4)
+  =>
+  (retract ?f)
+  (assert (Modulo 5))
+)
