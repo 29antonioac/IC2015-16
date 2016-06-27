@@ -5,14 +5,14 @@
 ; Vender valores de empresas peligrosas
 (defrule VenderValoresPeligrosos
   (Modulo 4)
-  (Cartera (Nombre ?nombre) (Peligrosidad true ?explicacion))
+  (Cartera (Nombre ?nombre) (Peligroso true ?explicacion))
   (Valor (Nombre ?nombre) (Sector ?sector) (VarMes ?varMes) (RPD ?RPD))
   (Sector (Nombre ?sector) (VarMes ?varSector))
   (test (< ?varMes 0))
   (test (< (- ?varMes ?varSector) -3))
   =>
-  (bind ?RE (- 20 (* 100 ?RPD)))
-  (assert Propuesta
+  (bind ?RE (- 20 ?RPD))
+  (assert (Propuesta
     (Operacion Vender)
     (Nombre ?nombre)
     (RE ?RE)
@@ -25,21 +25,22 @@
                           "% por dividendos perderíamos un "
                           ?RE
                           "%."
-                  ))
+                  )))
   )
 )
 
 ; Invertir en empresas infravaloradas
 (defrule InvertirValoresInfravalorados
   (Modulo 4)
-  (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (Infravalorada true ?explicacion))
+  (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (Infravalorado true ?explicacion))
 
   (Cartera (Nombre DISPONIBLE) (Valor ?valor))
   (Sector (Nombre ?sector) (PER ?PERMedio))
+  (test (neq ?PER 0))
   (test (> ?valor 0))
   =>
-  (bind ?RE (+ (/ (* 100 (- ?PERMedio ?PER)) (* 5 ?PER)) (* 100 ?RPD)))
-  (assert Propuesta
+  (bind ?RE (+ (/ (* 100 (- ?PERMedio ?PER)) (* 5 ?PER)) ?RPD))
+  (assert (Propuesta
     (Operacion Comprar)
     (Nombre ?nombre)
     (RE ?RE)
@@ -51,12 +52,13 @@
                           " anual a lo que habría que sumar el "
                           ?RPD
                           " de beneficios por dividendos."
-                  ))
+                  )))
   )
 )
 
 ; Vender valores de empresas sobrevaloradas
 (defrule VenderValoresSobrevalorados
+  (Modulo 4)
   (Cartera (Nombre ?nombre))
   (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (RPA ?RPA) (Sobrevalorado true ?explicacion))
   (Sector (Nombre ?nombre) (PER ?PERMedio))
@@ -64,11 +66,11 @@
   (bind ?precioDinero 0)
   ;;;;;;;
 
-
+  (test (neq ?PER 0))
   (test (< ?RPA (+ 5 ?precioDinero)))
   =>
-  (bind ?RE (- (/ (- ?PER ?PERMedio) (* 5 ?PER)) (* 100 ?RPD)))
-  (assert Propuesta
+  (bind ?RE (- (/ (- ?PER ?PERMedio) (* 5 ?PER)) ?RPD))
+  (assert (Propuesta
     (Operacion Vender)
     (Nombre ?nombre)
     (RE ?RE)
@@ -80,20 +82,21 @@
                           " anual, así que aunque se pierda el "
                           ?RPD
                           " de beneficios por dividendos saldría rentable."
-                  ))
+                  )))
   )
 )
 
 ; Cambiar inversión a valores más rentables
 (defrule CambiarInversion
-  (Valor (Nombre ?empresa1) (RPD ?RPD1) (RPA ?RPA1) (Sobrevalorada ~true))
+  (Modulo 4)
+  (Valor (Nombre ?empresa1) (RPD ?RPD1) (RPA ?RPA1) (Sobrevalorado ~true))
   (Cartera (Nombre ?empresa2))
-  (Valor (Nombre ?empresa2) (RPD ?RPD2) (RPA ?RPA2) (Infravalorada ~true))
-  (bind ?valorEmpresa2 (+ ?RPA2 ?RPD2 1))
-  (test (> ?RPD1 ?valorEmpresa2))
+  (Valor (Nombre ?empresa2) (RPD ?RPD2) (RPA ?RPA2) (Infravalorado ~true))
+  (test (> ?RPD1 (+ ?RPA2 ?RPD2 1)))
   =>
+  (bind ?valorEmpresa2 (+ ?RPA2 ?RPD2 1))
   (bind ?RE (- ?RPD1 ?valorEmpresa2))
-  (assert Propuesta
+  (assert (Propuesta
     (Operacion Cambiar)
     (Nombre ?empresa2)
     (RE ?RE)
@@ -107,10 +110,6 @@
                           ?valorEmpresa2
                           ". Aunque se pague el 1% del coste del cambio te saldría rentable."
                   ))
-    (OtraEmpresa ?empresa1)
+    (OtraEmpresa ?empresa1))
   )
-
-
-
-
 )

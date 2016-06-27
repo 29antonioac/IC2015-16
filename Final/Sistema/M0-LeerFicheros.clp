@@ -31,7 +31,7 @@
       (VarDia (read archivoAnalisis))
       (Capitalizacion (read archivoAnalisis))
       (PER (read archivoAnalisis))
-      (RPD (read archivoAnalisis))
+      (RPD (* 100 (read archivoAnalisis)))
       (Tamano (read archivoAnalisis))
       (PorcentajeIbex (read archivoAnalisis))
       (EtiqPER (read archivoAnalisis))
@@ -176,8 +176,8 @@
 ; Cálculo del RPA
 (defrule RPA
   (Modulo 0)
-  ?valor <- (Valor (Nombre ?nombre) (RPD ?RPD) (VarAnual ?varAnual) (RPA NULL))
+  ?valor <- (Valor (Nombre ?nombre) (RPD ?RPD) (VarTri ?varTri) (RPA NULL))
   =>
-  (bind ?RPA (+ (* 100 ?RPD) ?varAnual))
+  (bind ?RPA (+ ?RPD ?varTri))
   (modify ?valor (RPA ?RPA))
 )
