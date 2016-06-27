@@ -70,15 +70,13 @@
   (bind ?Aceptar (read))
   (if (or (eq ?Aceptar S) (eq ?Aceptar s)) then
     (retract ?f)
-    (retract ?mejor)
 
     ; Actualizar cartera
   else
-    (retract ?mejor)
     (retract ?numPropuestas)
     (assert (NumeroPropuestas (+ ?num 1)))
-    (printout t crlf ?num)
   )
+  (retract ?mejor)
 )
 
 (defrule Recalcular
