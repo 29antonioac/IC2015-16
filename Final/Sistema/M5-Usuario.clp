@@ -5,13 +5,13 @@
 ; Busca el valor con mayor rendimiento esperado
 ; Basado en el Ejercicio 9 de Jacinto Carrasco Castillo de la Wiki
 ; http://ic4.ugr.es/prd/doku.php?id=asignatura:ic:ejercicio_9
-(defrule MaxRE
-  (Modulo 5)
-  (Propuesta (Nombre ?N1) (RE ?S1))
-  (not  (and (Propuesta (Nombre ?) (RE ?S2)) (test(> ?S2 ?S1))))
-  =>
-  (assert (MejorPropuesta ?N1 ?S1))
-)
+; (defrule MaxRE
+;   (Modulo 5)
+;   (Propuesta (Nombre ?N1) (RE ?S1))
+;   (not  (and (Propuesta (Nombre ?) (RE ?S2)) (test(> ?S2 ?S1))))
+;   =>
+;   (assert (MejorPropuesta ?N1 ?S1))
+; )
 
 ;; Menú principal
 
