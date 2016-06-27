@@ -72,3 +72,18 @@
   (slot OtraEmpresa
     (default NULL))
 )
+
+; Hecho para llevar la cuenta de las propuestas
+(deffacts NumeroPropuestas
+  (NumeroPropuestas 0)
+)
+
+; Hecho para poner máximo de propuestas
+(deffacts MaximoPropuestas
+  (MaximoPropuestas 5)
+)
+
+; Hecho para poner el precio del dinero
+(deffacts precioDinero
+  (PrecioDinero 0)
+)

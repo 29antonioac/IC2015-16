@@ -59,6 +59,9 @@
 (defrule MostrarPropuestas
   (Modulo 5)
   ?f <- (Respuesta 1)
+  ?numPropuestas <- (NumeroPropuestas ?num)
+  (MaximoPropuestas ?max)
+  (test (< ?num ?max))
   ?mejor <- (Propuesta (Operacion ?Operacion) (Nombre ?Nombre) (RE ?RE) (Explicacion ?Explicacion) )
   (not  (and (Propuesta (Nombre ?) (RE ?S2)) (test(> ?S2 ?RE))))
   =>
@@ -68,12 +71,27 @@
   (if (or (eq ?Aceptar S) (eq ?Aceptar s)) then
     (retract ?f)
     (retract ?mejor)
+
     ; Actualizar cartera
   else
     (retract ?mejor)
+    (retract ?numPropuestas)
+    (assert (NumeroPropuestas (+ ?num 1)))
+    (printout t crlf ?num)
   )
+)
 
-
+(defrule Recalcular
+  ?f <- (Modulo 5)
+  ?numPropuestas <- (NumeroPropuestas ?num)
+  (MaximoPropuestas ?max)
+  (test (eq ?num ?max))
+  =>
+  (printout t crlf "Recalculando propuestas...")
+  (retract ?f)
+  (retract ?numPropuestas)
+  (assert (NumeroPropuestas 0))
+  (assert (Modulo 4))
 )
 
 (defrule Salir
