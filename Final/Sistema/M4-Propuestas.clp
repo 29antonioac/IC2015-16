@@ -91,7 +91,7 @@
   (Modulo 4)
   (Valor (Nombre ?empresa1) (RPD ?RPD1) (RPA ?RPA1) (Sobrevalorado ~true))
   (Cartera (Nombre ?empresa2))
-  (Valor (Nombre ?empresa2) (RPD ?RPD2) (RPA ?RPA2) (Infravalorado ~true))
+  (Valor (Nombre ?empresa2 & ~?empresa1) (RPD ?RPD2) (RPA ?RPA2) (Infravalorado ~true))
   (test (> ?RPD1 (+ ?RPA2 ?RPD2 1)))
   =>
   (bind ?valorEmpresa2 (+ ?RPA2 ?RPD2 1))
