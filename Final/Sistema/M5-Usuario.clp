@@ -74,10 +74,10 @@
   (if (or (eq ?Aceptar S) (eq ?Aceptar s)) then
     (retract ?f)
     (if (eq ?Operacion Vender) then
-      (assert (Vender ?Nombre))
+      (assert (Vender ?Nombre -1))
       else
         (if (eq ?Operacion Comprar) then
-          (assert (Comprar ?Nombre))
+          (assert (Comprar ?Nombre -1))
         else
           (assert (Intercambiar ?Nombre ?Otra))
         )
@@ -106,19 +106,25 @@
 
 (defrule Comprar
   ?m <- (Modulo 5)
-  ?f <- (Comprar ?Nombre)
+  ?f <- (Comprar ?Nombre ?input)
   ?Cartera <- (Cartera (Nombre DISPONIBLE) (Valor ?disponible))
   (Valor (Nombre ?Nombre) (Precio ?Precio))
   =>
-  (printout t crlf "Comprar acciones de " ?Nombre ". ¿Cuántas? Tu saldo disponible es " ?disponible " y el precio por acción es " ?Precio ": ")
-  (bind ?cuanto (read))
-  (bind ?coste (* ?cuanto ?Precio ))
-  (while (> ?coste ?disponible)
-    (printout t "No tienes suficiente saldo" crlf)
+  (if (eq ?input -1) then
     (printout t crlf "Comprar acciones de " ?Nombre ". ¿Cuántas? Tu saldo disponible es " ?disponible " y el precio por acción es " ?Precio ": ")
     (bind ?cuanto (read))
-    ; Meter comisión
     (bind ?coste (* ?cuanto ?Precio ))
+    (while (> ?coste ?disponible)
+      (printout t "No tienes suficiente saldo" crlf)
+      (printout t crlf "Comprar acciones de " ?Nombre ". ¿Cuántas? Tu saldo disponible es " ?disponible " y el precio por acción es " ?Precio ": ")
+      (bind ?cuanto (read))
+      ; Meter comisión
+      (bind ?coste (* ?cuanto ?Precio ))
+    )
+  else
+    ; Meter comisión
+    (bind ?cuanto ?input)
+    (bind ?coste (* ?cuanto ?Precio))
   )
   (modify ?Cartera (Valor (- ?disponible ?coste)))
   ; Distinguir si ya tengo algo de aquí en la cartera
@@ -131,27 +137,33 @@
 
 (defrule Vender
   ?m <- (Modulo 5)
-  ?f <- (Vender ?Nombre)
+  ?f <- (Vender ?Nombre ?input)
   ?Cartera <- (Cartera (Nombre ?Nombre) (Acciones ?disponible) (Valor ?valor))
   ?Liquido <- (Cartera (Nombre DISPONIBLE) (Acciones ?accLiquido) (Valor ?liquido))
   (Valor (Nombre ?Nombre) (Precio ?Precio))
   =>
-  (printout t crlf "Vender acciones de " ?Nombre ". ¿Cuántas? Tus acciones disponibles son " ?disponible " y el precio por acción es " ?Precio ": ")
-  (bind ?cuanto (read))
-  (while (> ?cuanto ?disponible)
-    (printout t "No tienes suficientes acciones" crlf)
+  (if (eq ?input -1) then
     (printout t crlf "Vender acciones de " ?Nombre ". ¿Cuántas? Tus acciones disponibles son " ?disponible " y el precio por acción es " ?Precio ": ")
     (bind ?cuanto (read))
+    (while (> ?cuanto ?disponible)
+      (printout t "No tienes suficientes acciones" crlf)
+      (printout t crlf "Vender acciones de " ?Nombre ". ¿Cuántas? Tus acciones disponibles son " ?disponible " y el precio por acción es " ?Precio ": ")
+      (bind ?cuanto (read))
+    )
+  else
+    (bind ?cuanto ?input)
   )
   ; Meter comisión
   (bind ?coste (* 0.995 ?cuanto ?Precio ))
-  (if (eq ?disponible ?cuanto)
+  (if (eq ?disponible ?cuanto) then
     (retract ?Cartera)
   else
-    (modify ?Cartera (Acciones (- ?disponible ?cuanto) (Valor (- ?valor ?coste))))
+    (modify ?Cartera (Acciones (- ?disponible ?cuanto)))
+    (modify ?Cartera (Valor (- ?valor ?coste)))
   )
   ; Actualizar líquido
-  (modify ?liquido (Valor (+ ?liquido ?coste) (Acciones (+ ?accLiquido ?coste))))
+  (modify ?Liquido (Valor (+ ?liquido ?coste)))
+  (modify ?Liquido (Acciones (+ ?accLiquido ?coste)))
   (printout t crlf "Se han vendido " ?cuanto " acciones de " ?Nombre crlf)
   (retract ?f)
   (retract ?m)
@@ -170,6 +182,7 @@
   ?f <- (Respuesta 2)
   =>
   (retract ?f)
+  (printout t crlf)
 
   (do-for-all-facts ((?valorC Cartera)) TRUE
     (bind ?nombre (fact-slot-value ?valorC Nombre))
@@ -184,8 +197,9 @@
     )
   )
 
-  (printout t crlf "Pulse la tecla [Entrar] para continuar... ")
-  (readline)
+  ; (printout t crlf "Pulse la tecla [Entrar] para continuar... ")
+  ; (readline)
+  (printout t crlf)
   (assert(QuieroMenu))
 )
 
