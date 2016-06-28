@@ -62,14 +62,12 @@
   (Cartera (Nombre ?nombre))
   (Valor (Nombre ?nombre) (Sector ?sector) (PER ?PER) (RPD ?RPD) (RPA ?RPA) (Sobrevalorado true ?explicacion))
   (Sector (Nombre ?nombre) (PER ?PERMedio))
-  ; Hasta que vea el precio del dinero
-  (bind ?precioDinero 0)
-  ;;;;;;;
+  (PrecioDinero ?precioDinero)
 
   (test (neq ?PER 0))
   (test (< ?RPA (+ 5 ?precioDinero)))
   =>
-  (bind ?RE (- (/ (- ?PER ?PERMedio) (* 5 ?PER)) ?RPD))
+  (bind ?RE (- (/ (* 100 (- ?PER ?PERMedio)) (* 5 ?PER)) ?RPD))
   (assert (Propuesta
     (Operacion Vender)
     (Nombre ?nombre)
