@@ -171,6 +171,42 @@
 )
 
 (defrule Intercambiar
+  (Modulo 5)
+  ?f <- (Intercambiar ?EmpresaVender ?EmpresaComprar)
+  (Valor (Nombre ?EmpresaVender)  (Precio ?PrecioVender))
+  (Valor (Nombre ?EmpresaComprar) (Precio ?PrecioComprar))
+  (Cartera (Nombre ?EmpresaVender) (Acciones ?AccionesVender))
+  (printout t crlf "Intercambio")
+  =>
+  (retract ?f)
+
+  (bind ?ratio (/ ?PrecioVender ?PrecioComprar))
+
+  ; Calculamos el capital total de la cartera
+  (bind ?valorTotalCartera 0)
+  (do-for-all-facts ((?cart Cartera)) TRUE
+      (bind ?valorActual (fact-slot-value ?cart Valor))
+      (bind ?valorTotalCartera (+ ?valorTotalCartera ?valorActual))
+  )
+
+  (printout t "El capital total de tu cartera es de " ?valorTotalCartera ". Por cada acción de " ?EmpresaVender " puedes comprar " ?ratio " acciones de " ?EmpresaComprar ". Por favor, introduce el número de acciones que quieres vender de " ?EmpresaVender " y nostros calcularemos cuántas comprar de " ?EmpresaComprar ": ")
+
+  ; TODO: Ver cuántas acciones intercambiamos y comprobar que todo va bien.
+  (bind ?acc (read))
+
+  (while (not (and (>= ?acc 0) (<= ?acc ?AccionesVender) ) ) do
+      (format t "\n El número de acciones debe estar entre [%d, %d]: "
+          0 ?AccionesVender
+      )
+      (bind ?acc (read))
+  )
+
+  ; Vendemos las acciones indicadas por el usuario
+  (assert (Vender ?EmpresaVender ?acc))
+
+  ; Compramos las acciones indicadas el usuario
+  (assert (Comprar ?EmpresaComprar (* ?acc ?ratio)))
+
 
 
 )
@@ -196,15 +232,9 @@
              ?valor "€." crlf)
     )
   )
-
-  ; (printout t crlf "Pulse la tecla [Entrar] para continuar... ")
-  ; (readline)
   (printout t crlf)
   (assert(QuieroMenu))
 )
-
-
-
 
 (defrule Salir
   (Modulo 5)
@@ -212,9 +242,6 @@
   =>
   (exit)
 )
-
-
-
 
 (defrule CerrarModulo5
   (declare (salience -10000))
