@@ -173,20 +173,249 @@
   Así se ha intentado escoger una interfaz sencilla y con instrucciones claras
   para que el usuario no tenga ningún problema al utilizar el sistema.
 
-  
+
   \section{Descripción detallada del sistema}
+  Se detalla el funcionamiento del sistema, además de su estructura y la
+  interacción entre módulos.
+
   \subsection{Variables de entrada del problema}
+  El sistema tiene las siguientes variables de entrada:
+
+    \begin{enumerate}
+        \item \textbf{Cartera de valores}: Archivo de texto con información sobre la cartera de valores del usuario. Cada línea del archivo se corresponde con un valor en el que el usuario tenga inversión y está compuesta por los siguientes campos, delimitados por espacios:
+        \begin{itemize}
+            \item Nombre del valor: cadena de caracteres que identifica de forma unívoca un valor.
+            \item Número de acciones: cantidad de acciones de esa empresa que tiene el usuario.
+            \item Valor: cantidad de dinero que valen las acciones; este número ---en euros--- debe coincidir con el producto \code{número de acciones} $\times$ \code{precio de cada acción}.
+        \end{itemize}
+        Este archivo debe contener al menos una línea con el nombre \code{DISPONIBLE}, que informa de la cantidad de dinero líquido disponible, indicada en el campo \code{Valor}. El campo \code{número de acciones} de esta línea es irrelevante, aunque suele coincidir con el de \code{Valor}.\footnote{De hecho, en todo el sistema se ignora el campo \code{Número de acciones} de la línea cuyo nombre es \code{DISPONIBLE}, trabajando sobre el campo \code{Valor} y modificando única y exclusivamente este.}
+
+        \item \textbf{Análisis de los valores del mercado}: Archivo de texto con información sobre el estado actual de  los valores del Ibex35. Cada línea del archivo se corresponde con un valor del Ibex35 y está compuesta por los siguientes campos, delimitados por espacios:
+        \begin{itemize}
+            \item Nombre: cadena de caracteres que identifica de forma unívoca un valor.
+            \item Precio: precio ---en euros--- de una acción.
+            \item VarDia: variación del valor con respecto al día anterior ---en tanto por ciento---.
+            \item Capitalización: valor total de la empresa ---en miles de euros---.
+            \item Ratio precio-beneficio (PER): capitalización dividida por los beneficios anuales obtenidos por la empresa ---en tanto por ciento---.
+            \item Rentabilidad por dividendo (RPD): ratio que indica la cantidad recibida por los accionistas por dividendos ---en tanto por uno---.
+            \item Tam: cadena de caracteres que indica el tamaño de la empresa: \code{GRANDE}, \code{MEDIANA} o \code{PEQUENIA}.
+            \item Ibex: capitalización con respecto al total del Ibex ---en tanto por ciento---.
+            \item EtiqPER: cadena de caracteres que indica el estado actual del PER: \code{Alto}, \code{Medio} o \code{Bajo}.
+            \item EtiqRPD: cadena de caracteres que indica el estado actual del RPD: \code{Alto}, \code{Medio} o \code{Bajo}.
+            \item Sector: cadena de caracterres que identifica de forma unívoca el sector al que pertenece la empresa.
+            \item Var5Dias: variación del precio respecto al que tenía hace cinco días ---en tanto por ciento---.
+            \item Perd3Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos tres días ---\code{true}--- o no ---\code{false}---.
+            \item Perd5Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos cinco días ---\code{true}--- o no ---\code{false}---.
+            \item VarRelativaSector: variación de los últimos cinco días relativa a la variación del sector en el mismo tramo temporal ---en tanto por ciento---.
+            \item VarRelativaSectorChico: variable booleana que indica si la variación anterior es menor de un -5\% ---\code{true}--- o no ---\code{false}---.
+            \item VarMensual: variación del valor con respecto al mes anterior ---en tanto por ciento---.
+            \item VarTrimestral: variación del valor con respecto al trimestre anterior ---en tanto por ciento---.
+            \item VarSemestral: variación del valor con respecto al semestre anterior ---en tanto por ciento---.
+            \item VarAnual: variación del valor con respecto al año anterior ---en tanto por ciento---.
+        \end{itemize}
+
+        \item \textbf{Análisis de los sectores del mercado}: Archivo de texto con información sobre el estado actual de los sectores del Ibex35. Cada línea del archivo se corresponde con un sector del Ibex35 y está compuesta por los siguientes campos, delimitados por espacios:
+        \begin{itemize}
+            \item Nombre: cadena de caracteres que identifica de forma unívoca un sector.
+            \item VarDia: variación del valor con respecto al día anterior ---en tanto por ciento---.
+            \item Capitalización: valor total de la empresa ---en miles de euros---.
+            \item Ratio precio-beneficio (PER): capitalización dividida por los beneficios anuales obtenidos por la empresa ---en tanto por ciento---.
+            \item Rentabilidad por dividendo (RPD): ratio que indica la cantidad recibida por los accionistas por dividendos ---en tanto por uno---.
+            \item Ibex: capitalización con respecto al total del Ibex ---en tanto por ciento---.
+            \item Var5Dias: variación del precio respecto al que tenía hace cinco días ---en tanto por ciento---.
+            \item Perd3Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos tres días ---\code{true}--- o no ---\code{false}---.
+            \item Perd5Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos cinco días ---\code{true}--- o no ---\code{false}---.
+            \item VarMensual: variación del valor con respecto al mes anterior ---en tanto por ciento---.
+            \item VarTrimestral: variación del valor con respecto al trimestre anterior ---en tanto por ciento---.
+            \item VarSemestral: variación del valor con respecto al semestre anterior ---en tanto por ciento---.
+            \item VarAnual: variación del valor con respecto al año anterior ---en tanto por ciento---.
+        \end{itemize}
+        \item \textbf{Análisis de la situación político-económica}: archivo de texto con información sobre las noticias relevantes al mercado. Cada línea del archivo se corresponde con una noticia y está compuesta por los siguientes campos, delimitados por espacios:
+        \begin{itemize}
+            \item Nombre: cadena de caracteres que indica el valor del Ibex35 al que hace referencia la noticia ---si la noticia es de carácter general sobre el estado de la economía, este campo contiene la cadena \code{ECONOMIA}---.
+            \item Valoración: cadena de caracteres que indica la valoración que hace la noticia sobre la empresa a la que hace referencia; puede ser \code{Buena} o \code{Mala}.
+            \item Antigüedad: número de días transcurridos desde la publicación de la noticia.
+        \end{itemize}
+    \end{enumerate}
+
+  \subsection{Variables de salida del problema}
+
+  El sistema produce un único tipo de salida: una serie de cinco transacciones propuestas, ordenadas de mayor a menor rentabilidad esperada. Cada propuesta se compone de los siguientes apartados:
+  \begin{itemize}
+      \item Acción de la propuesta: aquí se indica qué se propone ---comprar, vender o intercambiar--- y cuáles son las empresas involucradas en la transacción.
+      \item Rentabilidad esperada: porcentaje de rentabilidad esperada tras ejecutar la transacción propuesta.
+      \item Razón: se da un razonamiento exhaustivo de por qué se hace la propuesta, en qué se basa la catalogación de los valores y qué hechos han llevado al sistema a proponer la transacción.
+  \end{itemize}
+
+  Además, el sistema es capaz de simular la ejecución de las propuestas elegidas por el usuario y guardar en un fichero de texto, si el usuario así lo desea y con el formato indicado en el primer punto de la sección \ref{ch:varEntrada}, el estado de la cartera tras aplicar las propuestas.
+
   \subsection{Conocimiento global del sistema}
+  El sistema obtiene su conocimiento en el \emph{Módulo 0}. Aquí se definen
+  estructuras para la base del conocimiento, además de generarla utilizando
+  sendos ficheros de texto.
+
   \subsection{Especificación de los módulos}
+  Aquí detallaremos la estructura general del sistema en módulos:
+
+    \begin{enumerate}\addtocounter{enumi}{-1}
+        \item Módulo de lectura y detección de valores inestables.
+        \item Módulo de detección de valores peligrosos.
+        \item Módulo de detección de valores sobrevalorados.
+        \item Módulo de detección de valores infravalorados.
+        \item Módulo de obtención de propuestas.
+        \item Módulo de interacción con el usuario.
+    \end{enumerate}
+
+    Como se ha mencionado antes, la gestión de módulos se ha realizado utilizando
+    un hecho \emph{Módulo i} con $i$ el número de módulo. Al salir de un módulo
+    se borra este hecho y se añade uno con un número superior. Hay que añadir
+    el 0 para que todo se comience a ejecutar.
+
   \subsubsection{Módulo de lectura y detección de valores inestables}
+  Este fichero tiene como objetivo leer los datos de los ficheros de texto
+  y detectar los valores inestables a partir de las variables de entrada.
+
   \subsubsection*{Estructura del conocimiento}
+  Además de los campos ofrecidos por el experto, se añaden el \emph{RPA}, que es
+  el rendimiento por año esperado (calculado utilizando la variación trimestral);
+  la estabilidad (indicando si el valor es estable); y si el valor es sobrevalorado,
+  infravalorado o no tiene valoración. En el caso de tenerla tiene su explicación
+  asociada.
+
+  Para los valores de la cartera se añade un campo más, peligroso, que vale \emph{true}
+  si dicho valor es peligroso.
+
+  Se han definido también plantillas para modelar propuestas, en las que se
+  almacenan las operaciones a realizar y sobre qué empresa/s.
+
   \subsubsection*{Lectura de los datos de entrada}
+  El módulo 0 se encarga de leer los ficheros de entrada. Se definen hechos
+  con las rutas relativas de los ficheros a leer, además de sendas reglas para
+  leer cada tipo de fichero.
+
+  Además, se calcula el RPA tal y como se ha descrito anteriormente.
+
   \subsubsection*{Detección de valores estables o inestables}
+  En el módulo 0 también se detectan los valores inestables, utlizando estas reglas.
+
+  \begin{regla}
+        Si un valor $V$ pertenece al sector de la construcción, entonces $V$ es inestable.
+    \end{regla}
+
+    \begin{regla}
+        Si la economía está bajando ---el Ibex tiene pérdidas en los cinco últimos días--- y un valor $V$ pertenece al sector servicios, entonces $V$ es inestable.
+    \end{regla}
+
+    \begin{regla}
+        Si hay una noticia positiva sobre un valor $V$ o su sector y la noticia tiene menos de dos días de antigüedad, entonces $V$ es estable.
+    \end{regla}
+
+    \begin{regla}
+        Si hay una noticia negativa sobre un valor $V$, sobre su sector o sobre la economía en general y la noticia tiene menos de dos días de antigüedad, entonces $V$ es inestable.
+    \end{regla}
+
+
   \subsubsection{Módulo de valores peligrosos}
+  El módulo 1 define las reglas para detectar valores peligrosos.
+
+  \begin{regla}
+        Si un valor $V$ de la cartera es inestable y ha tenido pérdidas durante los tres últimos días, entonces $V$ es peligroso.
+    \end{regla}
+
+    \begin{regla}
+        Si un valor $V$ de la cartera ha tenido pérdidas durante los últimos cinco días y su caída con respecto a la del sector es mayor a un 5\%, entonces $V$ es peligroso.\footnote{El experto describió esta regla en el documento de una forma más ambigua, pero tras contactos posteriores con él se llegó al acuerdo de que la forma aquí expuesta ---es decir, que el campo \code{VarRelativaSectorChico} sea igual a \code{false}--- era la correcta.}
+    \end{regla}
   \subsubsection{Módulo de valores sobrevalorados}
+
+  El módulo 2 calcula los valores sobrevalorados.
+  \begin{regla}
+        Dado un valor $V$, si su PER está marcado como \code{Alto} y su RPD como \code{Bajo}, entonces $V$ está sobrevalorado.
+    \end{regla}
+
+    \begin{regla}
+        Dado un valor $V$ cuyo tamaño sea \code{PEQUENIA}:
+        \begin{itemize}
+            \item Si su PER está marcado como \code{Alto}, entonces $V$ está sobrevalorado.
+            \item Si su PER está marcado como \code{Medio} y su RPD como \code{Bajo}, entonces $V$ está sobrevalorado.
+        \end{itemize}
+    \end{regla}
+
+    \begin{regla}
+        Dado un valor $V$ cuyo tamaño sea \code{GRANDE}:
+        \begin{itemize}
+            \item Si su RPD está marcado como \code{Bajo} y su PER como \code{Medio} o \code{Alto}, entonces $V$ está sobrevalorado.
+            \item Si su RPD está marcado como \code{Medio} y su PER como \code{Alto}, entonces $V$ está sobrevalorado.
+        \end{itemize}
+    \end{regla}
+
+
   \subsubsection{Módulo de valores infravalorados}
+
+  El módulo 3 calcula los valores infravalorados del sistema.
+
+  \begin{regla}
+      Si un valor $V$ tiene el PER marcado como \code{Bajo} y el RPD como \code{Alto}, entonces $V$ está infravalorado.
+  \end{regla}
+
+  \begin{regla}
+      Si un valor $V$ tiene el PER marcado como \code{Bajo}, ha tenido una caída de más de un 30\% en los últimos 3, 6 o 12 meses y ha subido entre un 0\% y un 10\% en el último mes, entonces $V$ está infravalorado.
+  \end{regla}
+
+  \begin{regla}
+      Si un valor $V$ tiene un tamaño \code{GRANDE}, su RPD está marcado como \code{Alto} y su PER como \code{Medio}, su variación mensual es mayor o igual al 0\% y tiene una variación respecto del sector positiva, entonces $V$ está infravalorado.
+  \end{regla}
+
+  El razonamiento termina aquí, pasando a los módulos 4 y 5 donde se recopilan
+  y presentan propuestas al usuario.
+
   \subsubsection{Módulo de obtención de propuestas}
+
+  En esete módulo se obtienen las propuestas para ofrecer al usuario.
+
+  \begin{regla}
+        Si un valor $V$ de la cartera actual es peligroso, en el último mes ha tenido pérdidas, y en ese mismo tramo temporal su caída con respecto a la de su sector es de más de un 3\%, entonces se debe proponer vender las acciones de $V$.
+
+        La rentabilidad esperada de esta propuesta es:
+        \[
+        RE = 20 - RPD
+        \]
+    \end{regla}
+
+    \begin{regla}
+        Si un valor $V$ está infravalorado y el usuario tiene dinero para comprar al menos una acción de $V$, entonces se debe proponer comprar acciones de $V$.
+
+        La rentabilidad esperada de esta propuesta es:
+        \[
+        RE = 100 \frac{PER_{sector} - PER}{5 PER} + RPD
+        \]
+        donde $PER_{sector}$ es el $PER$ del sector al que pertenece $V$.
+    \end{regla}
+
+    \begin{regla}
+        Si un valor $V$ de la cartera actual está sobrevalorado y su RPA es menor que $5 + PrecioDinero$, entonces se debe proponer vender las acciones de $V$.
+
+        La rentabilidad esperada de esta propuesta es:
+        \[
+        RE = \frac{PER - PER_{sector}}{5 PER} - RPD
+        \]
+        donde $PER_{sector}$ es el $PER$ del sector al que pertenece $V$.
+    \end{regla}
+
+    \begin{regla}
+        Si un valor $V_1$ no está sobrevalorado, un valor $V_2$ de la cartera actual no está infravalorado y el $RPD_1$ de $V_1$ es mayor que la suma $RPA_2 + RPD_2 + 1$ ---donde $RPA_2$ y $RPD_2$ son los campos relativos al valor $V_2$---, entonces se debe proponer cambiar las acciones de $V_2$ por acciones de $V_1$.
+
+        La rentabilidad esperada de esta propuesta es:
+        \[
+        RE = RPD_1 - (RPA_2 + RPD_2 + 1)
+        \]
+    \end{regla}
+
   \subsubsection{Módulo de interacción con el usuario}
+
+  El módulo 5 interactúa con el usuario mostrando las 5 mejores propuestas.
+  Lo hace utilizando un menú y con la base del conocimiento inducida. 
+
+
   \section{Manual de uso del sistema}
   \subsection{Estado actual de la cartera}
   \subsection{Propuestas de movimientos}
