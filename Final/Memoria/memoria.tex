@@ -138,8 +138,42 @@
   al que hemos tenido acceso durante el desarrollo.
 
   \subsection{Procedimiento de verificación y validación}
+  Para la verifiación y validación del sistema se han utilizado las técnicas vistas
+  en clase de teoría, además de las técnicas clásicas de ingeniería del software.
+
   \subsubsection*{Verificación}
+  La verificación es el primer paso, que es comprobar que el código sea correcto.
+
+  Se debe estudiar la consistencia del sistema, para la que se crean ejemplos
+  ficticios y se intenta hacer que el programa se salga de su flujo usual. Un
+  resultado clave de este estudio fue que se debía tener control en todo momento
+  del módulo que estaba trabajando, para que no existieran solapamientos entre
+  reglas o desorden de actuación. Para ello se define un hecho \emph{Modulo i},
+  con $i$ el número del módulo. Cuando se cambia de módulo se borra este hecho
+  y se incluye uno nuevo con el número de módulo siguiente.
+
+  Se analizó la completitud del sistema comparando el documento del experto
+  con el código, realizando pruebas para detectar posibles fallos.
+
   \subsubsection*{Validación}
+  La validación es la comprobación de que el sistema realiza lo que el usuario
+  necesita.
+
+  Primero se realizó un análisis de las reglas implementadas para asegurarnos
+  que no había ninguna mal expresada, siempre utilizando el documento del experto
+  como referencia.
+
+  Se realizaron tests para verificar que todo cumple lo que se pide: adición de
+  valores ficticios a la cartera, intentar comprar más acciones de las que se
+  pueden... Así se decidió aplicar prioridades a las reglas para que las noticias
+  buenas influyeran más que las malas.
+
+  Se ha llevado a cabo una validación interpretativa, donde el ingeniero de
+  conocimiento ha actuado como usuario para pulir la interacción del sistema.
+  Así se ha intentado escoger una interfaz sencilla y con instrucciones claras
+  para que el usuario no tenga ningún problema al utilizar el sistema.
+
+  
   \section{Descripción detallada del sistema}
   \subsection{Variables de entrada del problema}
   \subsection{Conocimiento global del sistema}
