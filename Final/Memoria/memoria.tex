@@ -87,7 +87,6 @@
 %%%%%%%%%%%%%%
 \begin{document}
   \maketitle
-  \tableofcontents
   \newpage
 
   \section{Resumen del funcionamiento del sistema}
@@ -186,9 +185,9 @@
         \begin{itemize}
             \item Nombre del valor: cadena de caracteres que identifica de forma unívoca un valor.
             \item Número de acciones: cantidad de acciones de esa empresa que tiene el usuario.
-            \item Valor: cantidad de dinero que valen las acciones; este número ---en euros--- debe coincidir con el producto \code{número de acciones} $\times$ \code{precio de cada acción}.
+            \item Valor: cantidad de dinero que valen las acciones; este número ---en euros--- debe coincidir con el producto \emph{número de acciones} $\times$ \emph{precio de cada acción}.
         \end{itemize}
-        Este archivo debe contener al menos una línea con el nombre \code{DISPONIBLE}, que informa de la cantidad de dinero líquido disponible, indicada en el campo \code{Valor}. El campo \code{número de acciones} de esta línea es irrelevante, aunque suele coincidir con el de \code{Valor}.\footnote{De hecho, en todo el sistema se ignora el campo \code{Número de acciones} de la línea cuyo nombre es \code{DISPONIBLE}, trabajando sobre el campo \code{Valor} y modificando única y exclusivamente este.}
+        Este archivo debe contener al menos una línea con el nombre \emph{DISPONIBLE}, que informa de la cantidad de dinero líquido disponible, indicada en el campo \emph{Valor}. El campo \emph{número de acciones} de esta línea es irrelevante, aunque suele coincidir con el de \emph{Valor}.
 
         \item \textbf{Análisis de los valores del mercado}: Archivo de texto con información sobre el estado actual de  los valores del Ibex35. Cada línea del archivo se corresponde con un valor del Ibex35 y está compuesta por los siguientes campos, delimitados por espacios:
         \begin{itemize}
@@ -198,16 +197,16 @@
             \item Capitalización: valor total de la empresa ---en miles de euros---.
             \item Ratio precio-beneficio (PER): capitalización dividida por los beneficios anuales obtenidos por la empresa ---en tanto por ciento---.
             \item Rentabilidad por dividendo (RPD): ratio que indica la cantidad recibida por los accionistas por dividendos ---en tanto por uno---.
-            \item Tam: cadena de caracteres que indica el tamaño de la empresa: \code{GRANDE}, \code{MEDIANA} o \code{PEQUENIA}.
+            \item Tam: cadena de caracteres que indica el tamaño de la empresa: \emph{GRANDE}, \emph{MEDIANA} o \emph{PEQUENIA}.
             \item Ibex: capitalización con respecto al total del Ibex ---en tanto por ciento---.
-            \item EtiqPER: cadena de caracteres que indica el estado actual del PER: \code{Alto}, \code{Medio} o \code{Bajo}.
-            \item EtiqRPD: cadena de caracteres que indica el estado actual del RPD: \code{Alto}, \code{Medio} o \code{Bajo}.
+            \item EtiqPER: cadena de caracteres que indica el estado actual del PER: \emph{Alto}, \emph{Medio} o \emph{Bajo}.
+            \item EtiqRPD: cadena de caracteres que indica el estado actual del RPD: \emph{Alto}, \emph{Medio} o \emph{Bajo}.
             \item Sector: cadena de caracterres que identifica de forma unívoca el sector al que pertenece la empresa.
             \item Var5Dias: variación del precio respecto al que tenía hace cinco días ---en tanto por ciento---.
-            \item Perd3Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos tres días ---\code{true}--- o no ---\code{false}---.
-            \item Perd5Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos cinco días ---\code{true}--- o no ---\code{false}---.
+            \item Perd3Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos tres días ---\emph{true}--- o no ---\emph{false}---.
+            \item Perd5Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos cinco días ---\emph{true}--- o no ---\emph{false}---.
             \item VarRelativaSector: variación de los últimos cinco días relativa a la variación del sector en el mismo tramo temporal ---en tanto por ciento---.
-            \item VarRelativaSectorChico: variable booleana que indica si la variación anterior es menor de un -5\% ---\code{true}--- o no ---\code{false}---.
+            \item VarRelativaSectorChico: variable booleana que indica si la variación anterior es menor de un -5\% ---\emph{true}--- o no ---\emph{false}---.
             \item VarMensual: variación del valor con respecto al mes anterior ---en tanto por ciento---.
             \item VarTrimestral: variación del valor con respecto al trimestre anterior ---en tanto por ciento---.
             \item VarSemestral: variación del valor con respecto al semestre anterior ---en tanto por ciento---.
@@ -223,8 +222,8 @@
             \item Rentabilidad por dividendo (RPD): ratio que indica la cantidad recibida por los accionistas por dividendos ---en tanto por uno---.
             \item Ibex: capitalización con respecto al total del Ibex ---en tanto por ciento---.
             \item Var5Dias: variación del precio respecto al que tenía hace cinco días ---en tanto por ciento---.
-            \item Perd3Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos tres días ---\code{true}--- o no ---\code{false}---.
-            \item Perd5Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos cinco días ---\code{true}--- o no ---\code{false}---.
+            \item Perd3Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos tres días ---\emph{true}--- o no ---\emph{false}---.
+            \item Perd5Consec: valor booleano que indica si la empresa ha tenido pérdidas durante los últimos cinco días ---\emph{true}--- o no ---\emph{false}---.
             \item VarMensual: variación del valor con respecto al mes anterior ---en tanto por ciento---.
             \item VarTrimestral: variación del valor con respecto al trimestre anterior ---en tanto por ciento---.
             \item VarSemestral: variación del valor con respecto al semestre anterior ---en tanto por ciento---.
@@ -232,8 +231,8 @@
         \end{itemize}
         \item \textbf{Análisis de la situación político-económica}: archivo de texto con información sobre las noticias relevantes al mercado. Cada línea del archivo se corresponde con una noticia y está compuesta por los siguientes campos, delimitados por espacios:
         \begin{itemize}
-            \item Nombre: cadena de caracteres que indica el valor del Ibex35 al que hace referencia la noticia ---si la noticia es de carácter general sobre el estado de la economía, este campo contiene la cadena \code{ECONOMIA}---.
-            \item Valoración: cadena de caracteres que indica la valoración que hace la noticia sobre la empresa a la que hace referencia; puede ser \code{Buena} o \code{Mala}.
+            \item Nombre: cadena de caracteres que indica el valor del Ibex35 al que hace referencia la noticia ---si la noticia es de carácter general sobre el estado de la economía, este campo contiene la cadena \emph{ECONOMIA}---.
+            \item Valoración: cadena de caracteres que indica la valoración que hace la noticia sobre la empresa a la que hace referencia; puede ser \emph{Buena} o \emph{Mala}.
             \item Antigüedad: número de días transcurridos desde la publicación de la noticia.
         \end{itemize}
     \end{enumerate}
@@ -323,28 +322,28 @@
     \end{regla}
 
     \begin{regla}
-        Si un valor $V$ de la cartera ha tenido pérdidas durante los últimos cinco días y su caída con respecto a la del sector es mayor a un 5\%, entonces $V$ es peligroso.\footnote{El experto describió esta regla en el documento de una forma más ambigua, pero tras contactos posteriores con él se llegó al acuerdo de que la forma aquí expuesta ---es decir, que el campo \code{VarRelativaSectorChico} sea igual a \code{false}--- era la correcta.}
+        Si un valor $V$ de la cartera ha tenido pérdidas durante los últimos cinco días y su caída con respecto a la del sector es mayor a un 5\%, entonces $V$ es peligroso.
     \end{regla}
   \subsubsection{Módulo de valores sobrevalorados}
 
   El módulo 2 calcula los valores sobrevalorados.
   \begin{regla}
-        Dado un valor $V$, si su PER está marcado como \code{Alto} y su RPD como \code{Bajo}, entonces $V$ está sobrevalorado.
+        Dado un valor $V$, si su PER está marcado como \emph{Alto} y su RPD como \emph{Bajo}, entonces $V$ está sobrevalorado.
     \end{regla}
 
     \begin{regla}
-        Dado un valor $V$ cuyo tamaño sea \code{PEQUENIA}:
+        Dado un valor $V$ cuyo tamaño sea \emph{PEQUENIA}:
         \begin{itemize}
-            \item Si su PER está marcado como \code{Alto}, entonces $V$ está sobrevalorado.
-            \item Si su PER está marcado como \code{Medio} y su RPD como \code{Bajo}, entonces $V$ está sobrevalorado.
+            \item Si su PER está marcado como \emph{Alto}, entonces $V$ está sobrevalorado.
+            \item Si su PER está marcado como \emph{Medio} y su RPD como \emph{Bajo}, entonces $V$ está sobrevalorado.
         \end{itemize}
     \end{regla}
 
     \begin{regla}
-        Dado un valor $V$ cuyo tamaño sea \code{GRANDE}:
+        Dado un valor $V$ cuyo tamaño sea \emph{GRANDE}:
         \begin{itemize}
-            \item Si su RPD está marcado como \code{Bajo} y su PER como \code{Medio} o \code{Alto}, entonces $V$ está sobrevalorado.
-            \item Si su RPD está marcado como \code{Medio} y su PER como \code{Alto}, entonces $V$ está sobrevalorado.
+            \item Si su RPD está marcado como \emph{Bajo} y su PER como \emph{Medio} o \emph{Alto}, entonces $V$ está sobrevalorado.
+            \item Si su RPD está marcado como \emph{Medio} y su PER como \emph{Alto}, entonces $V$ está sobrevalorado.
         \end{itemize}
     \end{regla}
 
@@ -354,15 +353,15 @@
   El módulo 3 calcula los valores infravalorados del sistema.
 
   \begin{regla}
-      Si un valor $V$ tiene el PER marcado como \code{Bajo} y el RPD como \code{Alto}, entonces $V$ está infravalorado.
+      Si un valor $V$ tiene el PER marcado como \emph{Bajo} y el RPD como \emph{Alto}, entonces $V$ está infravalorado.
   \end{regla}
 
   \begin{regla}
-      Si un valor $V$ tiene el PER marcado como \code{Bajo}, ha tenido una caída de más de un 30\% en los últimos 3, 6 o 12 meses y ha subido entre un 0\% y un 10\% en el último mes, entonces $V$ está infravalorado.
+      Si un valor $V$ tiene el PER marcado como \emph{Bajo}, ha tenido una caída de más de un 30\% en los últimos 3, 6 o 12 meses y ha subido entre un 0\% y un 10\% en el último mes, entonces $V$ está infravalorado.
   \end{regla}
 
   \begin{regla}
-      Si un valor $V$ tiene un tamaño \code{GRANDE}, su RPD está marcado como \code{Alto} y su PER como \code{Medio}, su variación mensual es mayor o igual al 0\% y tiene una variación respecto del sector positiva, entonces $V$ está infravalorado.
+      Si un valor $V$ tiene un tamaño \emph{GRANDE}, su RPD está marcado como \emph{Alto} y su PER como \emph{Medio}, su variación mensual es mayor o igual al 0\% y tiene una variación respecto del sector positiva, entonces $V$ está infravalorado.
   \end{regla}
 
   El razonamiento termina aquí, pasando a los módulos 4 y 5 donde se recopilan
@@ -413,26 +412,7 @@
   \subsubsection{Módulo de interacción con el usuario}
 
   El módulo 5 interactúa con el usuario mostrando las 5 mejores propuestas.
-  Lo hace utilizando un menú y con la base del conocimiento inducida. 
-
-
-  \section{Manual de uso del sistema}
-  \subsection{Estado actual de la cartera}
-  \subsection{Propuestas de movimientos}
-  \subsection{Actualización de la cartera en disco}
-  \subsection{Terminar el sistema}
-
-
-
-
-
-
-
-
-
-
-
-
+  Lo hace utilizando un menú y con la base del conocimiento inducida.
 
 
 \end{document}
