@@ -1,0 +1,175 @@
+\documentclass[a4paper, 11pt, titlepage]{article}
+%Comandos para configurar el idioma
+\usepackage[spanish,activeacute]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} %Necesario para el uso de las comillas latinas.
+
+%Código
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\usepackage{hyperref}
+\hypersetup{
+  pdfauthor={Antonio Álvarez Caballero},
+  pdftitle={Sistema experto de apoyo en inversión en bolsa},
+  unicode,
+  plainpages=false,
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=black,
+}
+
+%Paquetes matemáticos
+\usepackage{amsmath,amsfonts,amsthm}
+\usepackage{amssymb}
+%\usepackage[all]{xy} %Para diagramas
+\usepackage{graphicx} %Inclusion imagenes
+\usepackage{enumerate} %Personalización de enumeraciones
+\usepackage{mathtools} %Para \coloneqq
+\usepackage{tikz} %Dibujos
+\usetikzlibrary{positioning} %Distancias y posicionamiento en tikz
+
+% Algoritmos
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+% \usepackage{algorithm}% http://ctan.org/pkg/algorithms
+% \usepackage{algcompatible}% http://ctan.org/pkg/algorithmicx
+
+%Tipografía escalable
+\usepackage{lmodern}
+%Legibilidad
+\usepackage{microtype}
+
+\title{Sistema experto de apoyo en inversión en bolsa}
+\author{Antonio Álvarez Caballero $\cdot$ 15457968J\\
+    \href{mailto:analca3@correo.ugr.es}{analca3@correo.ugr.es}}
+\date{Curso 2015 - 2016}
+
+\theoremstyle{definition}
+\newtheorem{regla}{Regla}
+
+% Useful for commenting align environments!
+% Taken from http://tex.stackexchange.com/a/38171
+\newcommand{\comment}[1]{%
+  \text{\phantom{(#1)}} \tag{#1}
+}
+
+\usepackage{hyperref}
+
+% Comando para añadir URL, enlace y pie de página de una vez.
+\newcommand\fnurl[2]{%
+  \href{#2}{#1}\footnote{\url{#2}}%
+}
+
+%%%%%%%%%%%%%%
+\begin{document}
+  \maketitle
+  \tableofcontents
+  \newpage
+
+  \section{Resumen del funcionamiento del sistema}
+
+  Se ha desarrollado un sistema experto como apoyo a la inversión en bolsa.
+  Utilizando el estado actual del mercado, las noticias que afectan a éste y la
+  cartera actual del usuario, se ofrecen cinco operaciones de tres tipos.
+  Comprar acciones que se espera que se obtenga alta rentabilidad, vender las
+  que se espera que tengan baja rentabilidad y el intercambio de acciones
+  entre un valor de la cartera y uno de mercado. Todo esto para aumentar la
+  rentabilidad de las acciones del usuario.
+
+  Como cualquier sistema experto, es un sistema de apoyo en la que el usuario
+  tiene siempre la decisión. Además se permite no sólo decidir la acción sino
+  en qué cantidad.
+
+  Como funcionalidad adicional se permite guardar el estado de la cartera en
+  disco para que el usuario pueda guardar y retomar su trabajo.
+
+  \section{Proceso seguido en el desarrollo}
+  Teniendo en cuenta que el experto, directivo y usuarios eran la misma persona,
+  el desarrollo del sistema ha seguido lo explicado en clase de teoría: estudio
+  del problema, reuniones iniciales con el experto para la primera toma de
+  contacto, reuniones posteriores para detallar y contactos con directivos
+  y usuarios para definir las entradas y salidas del sistema. Además, se ha
+  llevado a cabo un proceso de verificación y validación con técnicas vistas
+  en clase de teoría.
+
+  \subsection{Sesiones con el experto}
+  Hubo un total de tres sesiones con el experto, y el conocimiento restante se
+  extrajo de un documento redactado por el propio experto.
+
+  En la primera reunión, en la que el experto actuó como directivo y usuario
+  también, se definieron pinceladas de la entrada y salida del sistema, además
+  de las primeras tareas del sistema (detección de valores estables y peligrosos).
+  Además se empezó a obtener información acerca de cómo el usuario quería que
+  actuara el sistema y cómo funcionaría en general. Aquí se estableció que
+  se debían mostrar cinco propuestas y de dónde se sacaban los datos de entrada.
+
+  En la segunda sesión se comenzaron a detallar el funcionamiento de cada módulo
+  y la estructura que debían seguir. Se dieron ideas generales de cómo debía
+  funcionar el módulo de detección de valores peligrosos, dando además algunas
+  reglas para el mismo. Además se comenzó a estructurar el sistema.
+
+  En la tercera y última sesión se definieron algunos conocimientos sobre el
+  ámbito, se dieron nuevas reglas y se llegó a la conclusión de que el conocimiento
+  del experto estaba mejor escrito. Así que el experto redactó un documento
+  al que hemos tenido acceso durante el desarrollo.
+
+  \subsection{Procedimiento de verificación y validación}
+  \subsubsection*{Verificación}
+  \subsubsection*{Validación}
+  \section{Descripción detallada del sistema}
+  \subsection{Variables de entrada del problema}
+  \subsection{Conocimiento global del sistema}
+  \subsection{Especificación de los módulos}
+  \subsubsection{Módulo de lectura y detección de valores inestables}
+  \subsubsection*{Estructura del conocimiento}
+  \subsubsection*{Lectura de los datos de entrada}
+  \subsubsection*{Detección de valores estables o inestables}
+  \subsubsection{Módulo de valores peligrosos}
+  \subsubsection{Módulo de valores sobrevalorados}
+  \subsubsection{Módulo de valores infravalorados}
+  \subsubsection{Módulo de obtención de propuestas}
+  \subsubsection{Módulo de interacción con el usuario}
+  \section{Manual de uso del sistema}
+  \subsection{Estado actual de la cartera}
+  \subsection{Propuestas de movimientos}
+  \subsection{Actualización de la cartera en disco}
+  \subsection{Terminar el sistema}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
