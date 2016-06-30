@@ -19,6 +19,7 @@
   (Menu 0 "Salir")
   (Menu 1 "Mostrar propuestas")
   (Menu 2 "Ver cartera")
+  (Menu 3 "Guardar cartera")
 )
 
 (defrule Iniciar
@@ -195,7 +196,6 @@
   (Valor (Nombre ?EmpresaVender)  (Precio ?PrecioVender))
   (Valor (Nombre ?EmpresaComprar) (Precio ?PrecioComprar))
   (Cartera (Nombre ?EmpresaVender) (Acciones ?AccionesVender))
-  (printout t crlf "Intercambio")
   =>
   (retract ?f)
 
@@ -210,7 +210,7 @@
 
   (printout t "El capital total de tu cartera es de " ?valorTotalCartera ". Por cada acción de " ?EmpresaVender " puedes comprar " ?ratio " acciones de " ?EmpresaComprar ". Por favor, introduce el número de acciones que quieres vender de " ?EmpresaVender " y nostros calcularemos cuántas comprar de " ?EmpresaComprar ": ")
 
-  ; TODO: Ver cuántas acciones intercambiamos y comprobar que todo va bien.
+
   (bind ?acc (read))
 
   (while (not (and (>= ?acc 0) (<= ?acc ?AccionesVender) ) ) do
@@ -220,13 +220,13 @@
       (bind ?acc (read))
   )
 
+  (bind ?cuantasComprar (div (* ?acc ?ratio) 1))
+
   ; Vendemos las acciones indicadas por el usuario
   (assert (Vender ?EmpresaVender ?acc))
 
   ; Compramos las acciones indicadas el usuario
-  (assert (Comprar ?EmpresaComprar (* ?acc ?ratio)))
-
-
+  (assert (Comprar ?EmpresaComprar ?cuantasComprar))
 
 )
 
@@ -255,16 +255,30 @@
   (assert(QuieroMenu))
 )
 
+(defrule GuardarCartera
+  (Modulo 5)
+  ?g <- (Respuesta 3)
+  (Fichero Cartera ?ficheroCartera)
+  =>
+  (retract ?g)
+  (open ?ficheroCartera fichCartera "w")
+
+  (do-for-all-facts ((?v Cartera)) TRUE
+      (bind ?nombre (fact-slot-value ?v Nombre))
+      (bind ?acciones (fact-slot-value ?v Acciones))
+      (bind ?valor (fact-slot-value ?v Valor))
+      (printout fichCartera ?nombre " " ?acciones " " ?valor crlf)
+  )
+
+  (close fichCartera)
+
+  (printout t crlf "Cartera guardada en " ?ficheroCartera "." crlf)
+
+)
+
 (defrule Salir
   (Modulo 5)
   (Respuesta 0)
   =>
   (exit)
-)
-
-(defrule CerrarModulo5
-  (declare (salience -10000))
-  ?f <- (Modulo 5)
-  =>
-  (retract ?f)
 )
