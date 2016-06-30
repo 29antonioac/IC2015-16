@@ -113,23 +113,41 @@
   (if (eq ?input -1) then
     (printout t crlf "Comprar acciones de " ?Nombre ". ¿Cuántas? Tu saldo disponible es " ?disponible " y el precio por acción es " ?Precio ": ")
     (bind ?cuanto (read))
-    (bind ?coste (* ?cuanto ?Precio ))
-    (while (> ?coste ?disponible)
+    (bind ?costeBruto (* ?cuanto ?Precio ))
+    (while (> ?costeBruto ?disponible)
       (printout t "No tienes suficiente saldo" crlf)
       (printout t crlf "Comprar acciones de " ?Nombre ". ¿Cuántas? Tu saldo disponible es " ?disponible " y el precio por acción es " ?Precio ": ")
       (bind ?cuanto (read))
-      ; Meter comisión
-      (bind ?coste (* ?cuanto ?Precio ))
+
+      (bind ?costeBruto (* ?cuanto ?Precio))
     )
   else
     ; Meter comisión
     (bind ?cuanto ?input)
-    (bind ?coste (* ?cuanto ?Precio))
+    (bind ?costeBruto (* ?cuanto ?Precio))
   )
+  (bind ?coste (* 1.005 ?costeBruto))
+
+  ; Actualizar valor de dicha acción en la cartera (si existe)
+  (do-for-fact
+      ((?vc Cartera))
+      (eq ?Nombre (fact-slot-value ?vc Nombre))
+
+      ; Obtenemos el número actual de acciones
+      (bind ?vcAcc (fact-slot-value ?vc Acciones))
+      ;
+      ; Actualizamos el valor de acciones que vamos a tener
+      (bind ?cuanto (+ ?vcAcc ?cuanto))
+
+      ; Eliminamos el valor de la cartera
+      (retract ?vc)
+  )
+
+
   (modify ?Cartera (Valor (- ?disponible ?coste)))
   ; Distinguir si ya tengo algo de aquí en la cartera
-  (assert (Cartera (Nombre ?Nombre) (Acciones ?cuanto) (Valor ?coste)))
-  (printout t crlf "Se han comprado " ?cuanto " acciones de " ?Nombre crlf)
+  (assert (Cartera (Nombre ?Nombre) (Acciones ?cuanto) (Valor ?costeBruto)))
+  (printout t crlf "Tienes " ?cuanto " acciones de " ?Nombre crlf)
   (retract ?f)
   (retract ?m)
   (assert (Modulo 4))
@@ -154,12 +172,13 @@
     (bind ?cuanto ?input)
   )
   ; Meter comisión
-  (bind ?coste (* 0.995 ?cuanto ?Precio ))
+  (bind ?costeBruto (* ?cuanto ?Precio ))
+  (bind ?coste (* 0.95 ?costeBruto ))
   (if (eq ?disponible ?cuanto) then
     (retract ?Cartera)
   else
     (modify ?Cartera (Acciones (- ?disponible ?cuanto)))
-    (modify ?Cartera (Valor (- ?valor ?coste)))
+    (modify ?Cartera (Valor (- ?valor ?costeBruto)))
   )
   ; Actualizar líquido
   (modify ?Liquido (Valor (+ ?liquido ?coste)))
@@ -195,7 +214,7 @@
   (bind ?acc (read))
 
   (while (not (and (>= ?acc 0) (<= ?acc ?AccionesVender) ) ) do
-      (format t "\n El número de acciones debe estar entre [%d, %d]: "
+      (format t "\n El número de acciones debe estar entre %d y %d: "
           0 ?AccionesVender
       )
       (bind ?acc (read))
